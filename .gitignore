@@ -1,0 +1,17 @@
+/Library/
+/Logs/
+/Temp/
+*.csproj
+*.sln
+/obj
+/APK/
+/Test/
+/Assets/Free UI Click Sound Effects Pack/
+/Assets/Free UI Click Sound Effects Pack.meta
+/Assets/TextMesh Pro/
+/Assets/TextMesh Pro.meta
+/Assets/Scripte/TEMP/
+/Assets/Scripte/TEMP.meta
+*.spp
+/Assets/Free UI Click Sound Effect Pack/
+/Assets/Sci-Fi Sounds/
