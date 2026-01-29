@@ -3,7 +3,7 @@
     "name": "GameInputs",
     "maps": [
         {
-            "name": "Forklift",
+            "name": "ForkliftInput",
             "id": "df938dad-d868-43e8-a9f9-418c876d1e88",
             "actions": [
                 {
