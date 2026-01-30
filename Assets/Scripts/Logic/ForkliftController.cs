@@ -24,12 +24,19 @@ namespace Logic {
             _rigidBody = GetComponent<Rigidbody>();
             _transform = transform;
 
+            SplashScreenLogic.OnSceneReady+=Initialize;
+            
+        }
+
+        private void Initialize() {
             _input = new GameInputs();
             _input.ForkliftInput.EngineToggle.performed += ToggleEngine;
-            
+
             _input.ForkliftInput.Enable();
-            
+
             _fork.Initialize();
+            
+            SplashScreenLogic.OnSceneReady-=Initialize;
         }
 
         private void ToggleEngine(InputAction.CallbackContext context) {

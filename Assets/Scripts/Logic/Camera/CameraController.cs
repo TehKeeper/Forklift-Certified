@@ -18,11 +18,20 @@ namespace Logic.Camera {
         private Transform _transform;
 
         private void Awake() {
+            
+            _transform = transform;
+            
+            _transform.localRotation = Quaternion.identity;
+            SplashScreenLogic.OnSceneReady += Initialize;
+        }
+
+        private void Initialize() {
             _input = new GameInputs();
-        
+
             _input.ForkliftInput.Camera.performed += RotateCam;
             _input.ForkliftInput.Enable();
-            _transform = transform;
+            
+            SplashScreenLogic.OnSceneReady -= Initialize;
         }
 
         private void RotateCam(InputAction.CallbackContext ctx) {
