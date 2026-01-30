@@ -1106,8 +1106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a88b417dff06c49a52fef94423d431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveForce: 200
-  _rotationForce: 200
+  _moveForce: 20
+  _rotationForce: 20
   _engine: {fileID: 452613182}
   _fork:
     _forkTransform: {fileID: 1795658377}
@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81fc724f6f6e00c42a3b5764b51b4cf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Logic.Camera.CameraController
-  _sensitivity: 10
+  _sensitivity: 100
   _minVerticalAngle: -60
   _maxVerticalAngle: 60
   _minHorAngle: -85

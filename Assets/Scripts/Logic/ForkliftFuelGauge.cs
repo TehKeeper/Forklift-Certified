@@ -14,14 +14,12 @@ namespace Logic {
         }
 
         public void OnValueChanged(float v) {
-            Debug.Log($"On OnValueChanged {v}");
             _meterRoot.localEulerAngles = new Vector3(0, (_meterLimit * (v - 0.5f)) * 2f, 0);
         }
 
         public void TurnedOn(bool b) {
             _propertyBlock.SetColor(EmissionColor, b ? Color.white : Color.black);
-
-            Debug.Log($"On Part on {b}");
+            Debug.Log($"Gauge is on: {b}");
             foreach (Renderer render in _renderers) {
                 render.SetPropertyBlock(_propertyBlock);
                 if (b)

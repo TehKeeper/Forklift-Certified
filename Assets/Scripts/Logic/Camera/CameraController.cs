@@ -21,9 +21,11 @@ namespace Logic.Camera {
         private void Awake() {
             
             _transform = transform;
-            
+            Cursor.visible = false;
             _transform.localRotation = Quaternion.identity;
             SplashScreenLogic.OnSceneReady += Initialize;
+
+            Application.targetFrameRate = 60;
         }
 
         private void Initialize() {
