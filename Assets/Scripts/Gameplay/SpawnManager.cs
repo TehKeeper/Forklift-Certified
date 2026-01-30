@@ -3,6 +3,7 @@ using Tools;
 using UnityEngine;
 
 namespace Gameplay {
+    /// <summary>Spawns containters on one of several random points</summary>
     public class SpawnManager : MonoBehaviour {
         [SerializeField] private BoxController _boxPrefab;
 
@@ -12,18 +13,20 @@ namespace Gameplay {
         private BoxController _cachedBox;
 
         private void Awake() {
-            _pool = new GenericObjectPool<BoxController>(SpawnBox);
-            SpawnNewBox(0);
+            _pool = new GenericObjectPool<BoxController>(CreateNewBox);
+            SpawnBox(0);
         }
 
-        public void SpawnNewBox(int spawnPointId = -1) {
+        /// <summary>Spawn box on point</summary>
+        public void SpawnBox(int spawnPointId = -1) {
             _cachedBox = _pool.TryTake();
             _cachedBox.SetPosition(_spawnPoint[spawnPointId < 0 ? Random.Range(0, _spawnPoint.Length) : spawnPointId]
                 .position);
             _cachedBox.SetRotation(Quaternion.identity);
         }
 
-        private BoxController SpawnBox() {
+        /// <summary>Instantiating new box </summary>
+        private BoxController CreateNewBox() {
             BoxController boxController = Instantiate(_boxPrefab,
                 _spawnPoint[Random.Range(0, _spawnPoint.Length)].position, Quaternion.identity);
             boxController.OnDeactivate += _pool.Release;

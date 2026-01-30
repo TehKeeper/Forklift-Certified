@@ -1,10 +1,12 @@
 using System;
-using Tools;
+using System.Collections.Generic;
+using Logic.Ui;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Logic {
+    /// <summary>Main forklift movement controller</summary>
     [RequireComponent(typeof(Rigidbody))]
     public class ForkliftController : MonoBehaviour, IObservableCustom<Vector3> {
         [SerializeField] private float _moveForce = 100;
@@ -13,7 +15,6 @@ namespace Logic {
 
         [Space]
         [SerializeField] private ForkController _fork;
-
 
         [Space]
         [SerializeField] private ForkliftFuelTank _fuelTank;
@@ -29,7 +30,8 @@ namespace Logic {
         private bool _engineWorks;
         private float _fuelMod = 1;
 
-        // Start is called before the first frame update
+        private List<IDisposable> _disposers = new List<IDisposable>();
+
         void Awake() {
             _rigidBody = GetComponent<Rigidbody>();
             _transform = transform;
@@ -37,6 +39,9 @@ namespace Logic {
             SplashScreenLogic.OnSceneReady += Initialize;
 
             _fuelTank.StateMachine.OnStateChanged += ChangeBehaviour;
+
+            _disposers.Add(_fuelTank);
+            _disposers.Add(_fork);
         }
 
         private void ChangeBehaviour(FuelTankState obj) {
@@ -55,8 +60,7 @@ namespace Logic {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(obj), obj, null);
             }
-
-            Debug.Log($"Fuel Mod: {_fuelMod}");
+            
         }
 
         private void Initialize() {
@@ -100,41 +104,15 @@ namespace Logic {
         public void UnSubscribe(IObserver<Vector3> observer) {
             _fork.UnSubscribe(observer);
         }
-    }
 
-    public enum FuelTankState {
-        Full = 0,
-        HalfEmpty = 1,
-        Empty = 2
-    }
+        private void OnDestroy() {
+            SplashScreenLogic.OnSceneReady -= Initialize;
 
-    [Serializable]
-    public class ForkliftFuelTank {
-        public UnityEvent<float> _onValueChanged;
-        public GenericEnumStateMachine<FuelTankState> StateMachine = new();
+            _fuelTank.StateMachine.OnStateChanged -= ChangeBehaviour;
 
-        [Range(0, 1)]
-        [SerializeField] private float _fill = 1;
-
-        [SerializeField] private float _consumptionRate = 0.02f;
-
-        public void ConsumeFuel() {
-            if (_fill > 0) {
-                _fill = Mathf.Clamp01(_fill - Time.deltaTime * _consumptionRate);
+            foreach (IDisposable disposer in _disposers) {
+                disposer.Dispose();
             }
-
-            _onValueChanged?.Invoke(_fill);
-            StateMachine.SetState(StateOnFuel());
-        }
-
-        public FuelTankState StateOnFuel() {
-            if (_fill > 0.5f)
-                return FuelTankState.Full;
-
-            if (_fill > 0)
-                return FuelTankState.HalfEmpty;
-
-            return FuelTankState.Empty;
         }
     }
 }

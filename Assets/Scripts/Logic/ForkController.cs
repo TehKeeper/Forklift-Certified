@@ -2,8 +2,9 @@
 using UnityEngine;
 
 namespace Logic {
+    /// <summary>Controls fork of forklift </summary>
     [Serializable]
-    public class ForkController  : IObservableCustom<Vector3>{
+    public class ForkController : IObservableCustom<Vector3>, IDisposable {
         [SerializeField] private Transform _forkTransform;
         [SerializeField] private float _speed = 1;
         [SerializeField] private float _minHeight;
@@ -12,10 +13,11 @@ namespace Logic {
         private float _liftValue;
         private bool _initialized;
 
+        private Vector3 _defaultPosition;
         private event Action<Vector3> OnPositionChanged;
 
         public void Initialize() {
-            if(_initialized)
+            if (_initialized)
                 return;
 
             if (!_forkTransform) {
@@ -23,22 +25,22 @@ namespace Logic {
                 return;
             }
 
+            _defaultPosition = _forkTransform.localPosition;
+            _defaultPosition = new Vector3(_defaultPosition.x, _minHeight, _defaultPosition.z);
             _initialized = true;
         }
 
         public void Update(GameInputs input) {
-            if(!_initialized)
+            if (!_initialized)
                 return;
-            
+
             _liftValue =
                 Mathf.Clamp01(_liftValue +
                               input.ForkliftInput.ForkControl.ReadValue<float>() * Time.deltaTime * _speed);
-            
 
-            Vector3 localPos = _forkTransform.localPosition;
             _forkTransform.localPosition =
-                new Vector3(localPos.x, Mathf.Lerp(_minHeight, _maxHeigh, _liftValue), localPos.z);
-            
+                new Vector3(_defaultPosition.x, Mathf.Lerp(_minHeight, _maxHeigh, _liftValue), _defaultPosition.z);
+
             OnPositionChanged?.Invoke(_forkTransform.position);
         }
 
@@ -46,9 +48,13 @@ namespace Logic {
             OnPositionChanged += observer.OnNext;
             return _forkTransform.position;
         }
-        
+
         public void UnSubscribe(IObserver<Vector3> observer) {
             OnPositionChanged -= observer.OnNext;
+        }
+
+        public void Dispose() {
+            OnPositionChanged = null;
         }
     }
 }

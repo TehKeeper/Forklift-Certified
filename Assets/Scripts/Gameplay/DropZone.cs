@@ -1,6 +1,7 @@
 using UnityEngine;
 
 namespace Gameplay {
+    /// <summary>Zone that reacts to box placement</summary>
     public class DropZone : MonoBehaviour {
         [SerializeField] private SpawnManager _spawner;
 
@@ -10,7 +11,7 @@ namespace Gameplay {
                 return;
             
             if (other.CompareTag("Cargo"))
-                _spawner.SpawnNewBox();
+                _spawner.SpawnBox();
         }
     }
 }

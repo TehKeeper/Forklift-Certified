@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 namespace Tools {
-    public class GenericEnumStateMachine<T> where T : Enum {
+    public class GenericEnumStateMachine<T> : IDisposable where T : Enum  {
         public T CurrentState { get; private set; }
         public event Action<T> OnStateChanged;
 
@@ -22,6 +22,10 @@ namespace Tools {
                 Debug.Log($"{typeof(T)} state machine new state: {CurrentState}");
             }
             OnStateChanged?.Invoke(newState);
+        }
+
+        public void Dispose() {
+            OnStateChanged = null;
         }
     }
 }
