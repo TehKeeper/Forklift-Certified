@@ -9,9 +9,11 @@ namespace Logic {
     public class ForkliftController : MonoBehaviour, IObservableCustom<Vector3> {
         [SerializeField] private float _moveForce = 100;
         [SerializeField] private float _rotationForce = 100;
+        [SerializeField] private AudioSource _engine;
 
         [Space]
         [SerializeField] private ForkController _fork;
+
 
         [Space]
         [SerializeField] private ForkliftFuelTank _fuelTank;
@@ -41,9 +43,11 @@ namespace Logic {
             switch (obj) {
                 case FuelTankState.Full:
                     _fuelMod = 1;
+                    _engine.pitch = 1f;
                     break;
                 case FuelTankState.HalfEmpty:
                     _fuelMod = 0.75f;
+                    _engine.pitch = 0.8f;
                     break;
                 case FuelTankState.Empty:
                     _fuelMod = 0;
@@ -51,6 +55,7 @@ namespace Logic {
                 default:
                     throw new ArgumentOutOfRangeException(nameof(obj), obj, null);
             }
+
             Debug.Log($"Fuel Mod: {_fuelMod}");
         }
 
@@ -68,17 +73,22 @@ namespace Logic {
         private void ToggleEngine(InputAction.CallbackContext context) {
             _engineWorks = !_engineWorks;
             _engineSwitch?.Invoke(_engineWorks);
+            if (_engine)
+                if (_engineWorks)
+                    _engine.Play();
+                else
+                    _engine.Stop();
         }
-        
+
         void Update() {
             if (_engineWorks) {
                 _controlVectors = _input.ForkliftInput.Movement.ReadValue<Vector2>();
 
-                _rigidBody.AddForce(_transform.forward * _moveForce * _controlVectors.y  * _fuelMod);
+                _rigidBody.AddForce(_transform.forward * _moveForce * _controlVectors.y * _fuelMod);
                 _rigidBody.AddTorque(_transform.up * _rotationForce * _controlVectors.x * _fuelMod);
 
                 _fork.Update(_input);
-                
+
                 _fuelTank.ConsumeFuel();
             }
         }
@@ -90,7 +100,6 @@ namespace Logic {
         public void UnSubscribe(IObserver<Vector3> observer) {
             _fork.UnSubscribe(observer);
         }
-        
     }
 
     public enum FuelTankState {
@@ -116,7 +125,6 @@ namespace Logic {
 
             _onValueChanged?.Invoke(_fill);
             StateMachine.SetState(StateOnFuel());
-            
         }
 
         public FuelTankState StateOnFuel() {

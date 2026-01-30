@@ -13,12 +13,13 @@ namespace Gameplay {
 
         private void Awake() {
             _pool = new GenericObjectPool<BoxController>(SpawnBox);
-            SpawnNewBox();
+            SpawnNewBox(0);
         }
 
-        public void SpawnNewBox() {
+        public void SpawnNewBox(int spawnPointId = -1) {
             _cachedBox = _pool.TryTake();
-            _cachedBox.SetPosition(_spawnPoint[Random.Range(0, _spawnPoint.Length)].position);
+            _cachedBox.SetPosition(_spawnPoint[spawnPointId < 0 ? Random.Range(0, _spawnPoint.Length) : spawnPointId]
+                .position);
             _cachedBox.SetRotation(Quaternion.identity);
         }
 
@@ -26,7 +27,7 @@ namespace Gameplay {
             BoxController boxController = Instantiate(_boxPrefab,
                 _spawnPoint[Random.Range(0, _spawnPoint.Length)].position, Quaternion.identity);
             boxController.OnDeactivate += _pool.Release;
-            
+
             return boxController;
         }
     }
