@@ -617,14 +617,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 783038960}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.60181504, z: 0, w: 0.79863554}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3088219827632048688}
   m_Father: {fileID: 1504208535}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 74, z: 0}
 --- !u!1 &797268555
 GameObject:
   m_ObjectHideFlags: 0
@@ -795,13 +795,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7a88b417dff06c49a52fef94423d431, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveForce: 100
-  _rotationForce: 100
+  _moveForce: 200
+  _rotationForce: 200
   _fork:
     _forkTransform: {fileID: 1795658377}
     _speed: 1
     _minHeight: 2
     _maxHeigh: 9
+  _fuelTank:
+    _onValueChanged:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1504208536}
+          m_TargetAssemblyTypeName: Logic.ForkliftFuelGauge, Assembly-CSharp
+          m_MethodName: OnValueChanged
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _fill: 1
+    _consumptionRate: 0.001
+  _engineSwitch:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1504208536}
+        m_TargetAssemblyTypeName: Logic.ForkliftFuelGauge, Assembly-CSharp
+        m_MethodName: TurnedOn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!54 &918870765
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1304,6 +1337,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1504208535}
+  - component: {fileID: 1504208536}
   m_Layer: 0
   m_Name: Fuel Gauge
   m_TagString: Untagged
@@ -1320,7 +1354,7 @@ Transform:
   m_GameObject: {fileID: 1504208534}
   serializedVersion: 2
   m_LocalRotation: {x: -0.19505867, y: -0, z: -0, w: 0.9807916}
-  m_LocalPosition: {x: 0.964, y: 3.822, z: 1.9919987}
+  m_LocalPosition: {x: 1.174, y: 3.822, z: 1.9919987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1328,6 +1362,23 @@ Transform:
   - {fileID: 1543794832673024188}
   m_Father: {fileID: 918870766}
   m_LocalEulerAnglesHint: {x: -22.496, y: 0, z: 0}
+--- !u!114 &1504208536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1504208534}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d55f6fc06ad14d3296c6893cb3e79081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Logic.ForkliftFuelGauge
+  _meterLimit: 74
+  _meterRoot: {fileID: 783038961}
+  _renderers:
+  - {fileID: 8051466591329179606}
+  - {fileID: 6572028331194777876}
 --- !u!1 &1658712539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,7 +1877,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 624847189605363935}
