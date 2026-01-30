@@ -166,5 +166,9 @@ namespace Logic {
         private void OnDestroy() {
             OnDeactivate = null;
         }
+
+        public void SetDrive(bool b) {
+            _rigidbody.isKinematic = b;
+        }
     }
 }
