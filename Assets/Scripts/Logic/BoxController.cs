@@ -43,9 +43,11 @@ namespace Logic {
         }
 
         private void ForkContact(Collider other) {
+          
             if (!other.CompareTag("Fork")) {
                 return;
             }
+            Debug.Log("Fork Contact");
 
             if (_dormant)
                 return;
@@ -54,20 +56,23 @@ namespace Logic {
 
             _dormant = true;
             _transform.parent = other.transform;
+            
             _rigidbody.isKinematic = true;
+            
+            
         }
 
         private void ReleaseContact(Collider other) {
             if (!other.CompareTag("DropZone")) {
                 return;
             }
-
+      
             FreeRelease();
         }
 
         private async UniTask DelayCheck() {
             await UniTask.WaitForSeconds(1f);
-
+            Debug.Log("Delay Check");
             _checkFloor = true;
         }
 
@@ -77,10 +82,11 @@ namespace Logic {
 
         private void AwakeBody() {
             Debug.Log($"Awake Body");
-            if (!_dormant)
+            if (!_dormant) {
+                _checkFloor = false;
                 return;
-
-
+            }
+            
             _rigidbody.isKinematic = false;
 
             _transform.parent = null;
@@ -105,7 +111,7 @@ namespace Logic {
                 item.enabled = true;
             }
 
-            _checkFloor = true;
+            //_checkFloor = true;
             _rigidbody.useGravity = true;
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
@@ -119,6 +125,7 @@ namespace Logic {
         }
 
         public void FreeRelease() {
+            Debug.Log("Release");
             foreach (Collider item in _colliders) {
                 item.enabled = false;
             }

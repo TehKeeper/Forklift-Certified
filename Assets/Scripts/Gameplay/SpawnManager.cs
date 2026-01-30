@@ -16,7 +16,7 @@ namespace Gameplay {
             SpawnNewBox();
         }
 
-        private void SpawnNewBox() {
+        public void SpawnNewBox() {
             _cachedBox = _pool.TryTake();
             _cachedBox.SetPosition(_spawnPoint[Random.Range(0, _spawnPoint.Length)].position);
             _cachedBox.SetRotation(Quaternion.identity);

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Fork
   - DropZone
+  - Cargo
   layers:
   - Default
   - TransparentFX
