@@ -118,6 +118,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Camera"",
+                    ""type"": ""Value"",
+                    ""id"": ""c2f451aa-0b6f-4aad-b64e-1be5ee93b47c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -274,6 +283,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Fork Control"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""923bb17e-e6a8-47d6-8560-6e9fc7e4d81e"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -285,6 +305,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         m_ForkliftInput_Movement = m_ForkliftInput.FindAction("Movement", throwIfNotFound: true);
         m_ForkliftInput_EngineToggle = m_ForkliftInput.FindAction("Engine Toggle", throwIfNotFound: true);
         m_ForkliftInput_ForkControl = m_ForkliftInput.FindAction("Fork Control", throwIfNotFound: true);
+        m_ForkliftInput_Camera = m_ForkliftInput.FindAction("Camera", throwIfNotFound: true);
     }
 
     ~@GameInputs()
@@ -368,6 +389,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputAction m_ForkliftInput_Movement;
     private readonly InputAction m_ForkliftInput_EngineToggle;
     private readonly InputAction m_ForkliftInput_ForkControl;
+    private readonly InputAction m_ForkliftInput_Camera;
     /// <summary>
     /// Provides access to input actions defined in input action map "ForkliftInput".
     /// </summary>
@@ -391,6 +413,10 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "ForkliftInput/ForkControl".
         /// </summary>
         public InputAction @ForkControl => m_Wrapper.m_ForkliftInput_ForkControl;
+        /// <summary>
+        /// Provides access to the underlying input action "ForkliftInput/Camera".
+        /// </summary>
+        public InputAction @Camera => m_Wrapper.m_ForkliftInput_Camera;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -426,6 +452,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @ForkControl.started += instance.OnForkControl;
             @ForkControl.performed += instance.OnForkControl;
             @ForkControl.canceled += instance.OnForkControl;
+            @Camera.started += instance.OnCamera;
+            @Camera.performed += instance.OnCamera;
+            @Camera.canceled += instance.OnCamera;
         }
 
         /// <summary>
@@ -446,6 +475,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @ForkControl.started -= instance.OnForkControl;
             @ForkControl.performed -= instance.OnForkControl;
             @ForkControl.canceled -= instance.OnForkControl;
+            @Camera.started -= instance.OnCamera;
+            @Camera.performed -= instance.OnCamera;
+            @Camera.canceled -= instance.OnCamera;
         }
 
         /// <summary>
@@ -507,5 +539,12 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnForkControl(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Camera" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnCamera(InputAction.CallbackContext context);
     }
 }
