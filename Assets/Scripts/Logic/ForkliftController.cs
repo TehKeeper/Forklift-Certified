@@ -84,7 +84,7 @@ namespace Logic {
                     _engine.Stop();
         }
 
-        void Update() {
+        void FixedUpdate() {
             if (_engineWorks) {
                 _controlVectors = _input.ForkliftInput.Movement.ReadValue<Vector2>();
 
